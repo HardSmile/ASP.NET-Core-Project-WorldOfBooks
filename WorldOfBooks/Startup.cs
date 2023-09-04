@@ -21,7 +21,7 @@ namespace WorldOfBooks
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<WorldOfBooksDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -33,7 +33,7 @@ namespace WorldOfBooks
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<WorldOfBooksDbContext>();
             services.AddControllersWithViews();
         }
 
