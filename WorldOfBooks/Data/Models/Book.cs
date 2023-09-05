@@ -8,7 +8,7 @@
         [Required]
         [MaxLength(BookMaxLength)]
         [MinLength(BookMinLegth)]
-        public string BookName { get; set; }
+        public string Book { get; set; }
         [Required]
         [MaxLength(AuthorMakeMaxLength)]
         [MinLength(AuthorMakeMinLength)]
@@ -22,7 +22,7 @@
 
         public int Year { get; set; }
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category Category { get; set;  }
 
     }
 }

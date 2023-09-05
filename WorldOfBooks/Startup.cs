@@ -9,6 +9,7 @@ namespace WorldOfBooks
     using Microsoft.Extensions.Hosting;
 
     using WorldOfBooks.Data;
+    using WorldOfBooks.Infrastructure;
 
     public class Startup
     {
@@ -39,6 +40,7 @@ namespace WorldOfBooks
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,6 +65,7 @@ namespace WorldOfBooks
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
+            
         }
     }
 }
