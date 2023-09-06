@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using WorldOfBooks.Models.Books;
-    using System.Collections.Generic;
     using WorldOfBooks.Data;
     using System.Linq;
     using WorldOfBooks.Data.Models;
@@ -18,34 +17,32 @@
             Categories = this.GetBookCategories()
         });
         [HttpPost]
-        public IActionResult Add(AddBookFormModel nameOfBook)
+        public IActionResult Add(AddBookFormModel book)
         {
-            if (this.data.Categories.Any(c => c.Id == nameOfBook.CategoryId))
+            if (!this.data.Categories.Any(c => c.Id == book.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(nameOfBook.CategoryId), "Category does exist.");
+                this.ModelState.AddModelError(nameof(book.CategoryId), "Category does exist.");
             }
             if (!ModelState.IsValid)
             {
-                nameOfBook.Categories = this.GetBookCategories();
-                return View(nameOfBook);
+                book.Categories = this.GetBookCategories();
+                return View(book);
             }
             var bookData = new Book
             {
-                Author = nameOfBook.Author,
-                Description = nameOfBook.Description,
-                ImageUrl = nameOfBook.ImageUrl,
-                CategoryId = nameOfBook.CategoryId,
-                Year = nameOfBook.Year,
-
-            };
+                NameOfBook = book.NameOfBook,
+                Author = book.Author,
+                Description = book.Description,
+                ImageUrl = book.ImageUrl,
+                CategoryId = book.CategoryId
+                };
             this.data.Books.Add(bookData);
             this.data.SaveChanges();
 
             return RedirectToAction("Index","Home");
         }
         private IEnumerable<BookCategoryViewModel> GetBookCategories()
-        =>
-            this.data
+        => this.data
                 .Categories
                 .Select(c =>new BookCategoryViewModel
                 {

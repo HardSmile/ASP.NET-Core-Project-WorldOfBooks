@@ -10,8 +10,8 @@ using WorldOfBooks.Data;
 namespace WorldOfBooks.Migrations
 {
     [DbContext(typeof(WorldOfBooksDbContext))]
-    [Migration("20230904195706_WorldOfBooksTables")]
-    partial class WorldOfBooksTables
+    [Migration("20230906202411_WorldOfBooks")]
+    partial class WorldOfBooks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,11 +233,6 @@ namespace WorldOfBooks.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("BookName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -250,8 +245,10 @@ namespace WorldOfBooks.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
+                    b.Property<string>("NameOfBook")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -262,7 +259,7 @@ namespace WorldOfBooks.Migrations
 
             modelBuilder.Entity("WorldOfBooks.Data.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -270,7 +267,7 @@ namespace WorldOfBooks.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
@@ -331,7 +328,7 @@ namespace WorldOfBooks.Migrations
                     b.HasOne("WorldOfBooks.Data.Models.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");

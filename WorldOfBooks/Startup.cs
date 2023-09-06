@@ -22,9 +22,10 @@ namespace WorldOfBooks
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WorldOfBooksDbContext>(options =>
+            services
+                .AddDbContext<WorldOfBooksDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    this.Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => 

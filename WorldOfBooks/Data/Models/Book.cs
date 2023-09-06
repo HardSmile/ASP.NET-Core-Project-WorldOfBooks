@@ -8,20 +8,19 @@
         [Required]
         [MaxLength(BookMaxLength)]
         [MinLength(BookMinLegth)]
-        public string NameOfBook { get; set; }
+        public string NameOfBook { get; init; }
         [Required]
         [MaxLength(AuthorMakeMaxLength)]
         [MinLength(AuthorMakeMinLength)]
-        public string Author { get; set; }
+        public string Author { get; init; }
         [Required]
         [MaxLength(DescriptionMaxLength)]
         [MinLength(DescriptionBookMinLegth)]
-        public string Description { get; set; }
+        public string Description { get; init; }
         [Required]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; init; }
 
-        public int Year { get; set; }
-        public int CategoryId { get; set; }
+        public int CategoryId { get; init; }
         public Category Category { get; set;  }
 
     }
