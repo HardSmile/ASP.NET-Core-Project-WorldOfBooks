@@ -8,7 +8,7 @@
         [Required]
         [MaxLength(BookMaxLength)]
         [MinLength(BookMinLegth)]
-        public string Book { get; set; }
+        public string NameOfBook { get; set; }
         [Required]
         [MaxLength(AuthorMakeMaxLength)]
         [MinLength(AuthorMakeMinLength)]

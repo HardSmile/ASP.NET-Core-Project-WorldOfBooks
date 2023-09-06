@@ -33,6 +33,7 @@ using Microsoft.AspNetCore.Builder;
                 new Category { Name ="Psycho"}
             });
         }
-        
+       
+
     }
 }
