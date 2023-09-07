@@ -1,0 +1,16 @@
+﻿@model IEnumerable<BookListingViewModel>
+<div class="row">
+@foreach (var book in Model)
+{<div class=" col-md-4">
+     <div class="card mb-3">
+         <img class="card-img-top" src="@book.ImageUrl" alt="@book.Author @book.Book - (@book.Category)">
+         <div class="card-body text-center">
+             <h5 class="card-title text-center">@book.Book @book.Author (@book.Category) </h5>
+             <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">View More</a>
+         </div>
+
+        </div>
+     </div>
+     
+}
+    </div>

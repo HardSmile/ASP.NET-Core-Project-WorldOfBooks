@@ -16,6 +16,21 @@
         {
             Categories = this.GetBookCategories()
         });
+        public IActionResult All()
+        {
+            var books = this.data
+                .Books
+                .OrderByDescending(b=>b.Id)
+                .Select(b => new BookListingViewModel
+                {
+                    Id = b.Id,
+                    Book = b.NameOfBook,
+                    Author = b.Author,
+                    ImageUrl = b.ImageUrl,
+                    Category = b.Category.Name
+                }).ToList();
+            return View(books);
+        }
         [HttpPost]
         public IActionResult Add(AddBookFormModel book)
         {
@@ -35,11 +50,11 @@
                 Description = book.Description,
                 ImageUrl = book.ImageUrl,
                 CategoryId = book.CategoryId
-                };
+            };
             this.data.Books.Add(bookData);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction(nameof(All));
         }
         private IEnumerable<BookCategoryViewModel> GetBookCategories()
         => this.data
