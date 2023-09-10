@@ -16,10 +16,23 @@
         {
             Categories = this.GetBookCategories()
         });
-        public IActionResult All()
+        public IActionResult All(string author, string searchTerm)
         {
-            var books = this.data
-                .Books
+            var booksQuery = this.data.Books.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(author))
+            {
+                booksQuery = booksQuery.Where(b => b.Author == author);
+            }
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                booksQuery = booksQuery.Where(
+                    b => b.NameOfBook.ToLower().Contains(searchTerm.ToLower())
+                    || b.Author.ToLower().Contains(searchTerm.ToLower())
+                    || b.Description.ToLower().Contains(searchTerm.ToLower())
+                    );
+            }
+            var books = booksQuery
                 .OrderByDescending(b=>b.Id)
                 .Select(b => new BookListingViewModel
                 {
@@ -29,7 +42,17 @@
                     ImageUrl = b.ImageUrl,
                     Category = b.Category.Name
                 }).ToList();
-            return View(books);
+            var bookAuthors = this.data
+                .Books
+                .Select(b => b.Author)
+                .Distinct()
+                .ToList();
+            return View(new AllBooksViewModel
+            { 
+            Authors = bookAuthors,
+            Books = books,
+            SearchTerm = searchTerm
+            });
         }
         [HttpPost]
         public IActionResult Add(AddBookFormModel book)

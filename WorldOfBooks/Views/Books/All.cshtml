@@ -1,6 +1,36 @@
-﻿@model IEnumerable<BookListingViewModel>
+﻿@model AllBooksViewModel
+
+<form method="get">
+    <div class="row mb-5">
+        <div class="form-group" col-md-4>
+            <div class="form-group">
+                <label asp-for="Author"></label>
+                <select asp-for="Author" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var author in Model.Authors)
+                    {
+                        <option value="@author">@author</option>
+                    }
+                </select>
+            </div>
+        </div>>
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Name of Book">
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-md-4">
+           
+            <input type="submit" class="btn btn-primary" value="Search">
+        </div>
+    </div>
+</form>
+
 <div class="row">
-@foreach (var book in Model)
+@foreach (var book in Model.Books)
 {<div class=" col-md-4">
      <div class="card mb-3">
          <img class="card-img-top" src="@book.ImageUrl" alt="@book.Author @book.Book - (@book.Category)">
