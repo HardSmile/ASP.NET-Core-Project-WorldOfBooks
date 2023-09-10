@@ -16,24 +16,31 @@
         {
             Categories = this.GetBookCategories()
         });
-        public IActionResult All(string author, string searchTerm)
+        public IActionResult All([FromQuery]AllBooksViewModel query)
         {
             var booksQuery = this.data.Books.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(author))
+            if (!string.IsNullOrWhiteSpace(query.Author))
             {
-                booksQuery = booksQuery.Where(b => b.Author == author);
+                booksQuery = booksQuery.Where(b => b.Author == query.Author);
             }
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 booksQuery = booksQuery.Where(
-                    b => b.NameOfBook.ToLower().Contains(searchTerm.ToLower())
-                    || b.Author.ToLower().Contains(searchTerm.ToLower())
-                    || b.Description.ToLower().Contains(searchTerm.ToLower())
+                    b => b.NameOfBook.ToLower().Contains(query.SearchTerm.ToLower())
+                    || b.Author.ToLower().Contains(query.SearchTerm.ToLower())
+                    || b.Description.ToLower().Contains(query.SearchTerm.ToLower())
                     );
             }
+            booksQuery = query.Sorting switch
+            {
+                BookSorting.DateCreated => booksQuery.OrderByDescending(b => b.Id),
+                BookSorting.BookAndAuthor => booksQuery.OrderBy(b => b.NameOfBook).ThenBy(a => a.Author)
+            };
+            var totalBooks = this.data.Books.Count();
             var books = booksQuery
-                .OrderByDescending(b=>b.Id)
+                .Skip((query.CurrentPage - 1 ) * AllBooksViewModel.BooksPerPage)
+                .Take(AllBooksViewModel.BooksPerPage)
                 .Select(b => new BookListingViewModel
                 {
                     Id = b.Id,
@@ -47,12 +54,10 @@
                 .Select(b => b.Author)
                 .Distinct()
                 .ToList();
-            return View(new AllBooksViewModel
-            { 
-            Authors = bookAuthors,
-            Books = books,
-            SearchTerm = searchTerm
-            });
+            query.TotalBooks = totalBooks;
+            query.Authors = bookAuthors;
+            query.Books = books;
+            return View(query);
         }
         [HttpPost]
         public IActionResult Add(AddBookFormModel book)

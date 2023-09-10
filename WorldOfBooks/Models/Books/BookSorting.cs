@@ -2,6 +2,7 @@
 {
     public enum BookSorting
     {
-        BookAndAuthor = 0
+        DateCreated = 0,
+        BookAndAuthor = 1
     }
 }
