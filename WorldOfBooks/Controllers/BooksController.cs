@@ -37,7 +37,7 @@
                 BookSorting.DateCreated => booksQuery.OrderByDescending(b => b.Id),
                 BookSorting.BookAndAuthor => booksQuery.OrderBy(b => b.NameOfBook).ThenBy(a => a.Author)
             };
-            var totalBooks = this.data.Books.Count();
+            var totalBooks = booksQuery.Count();
             var books = booksQuery
                 .Skip((query.CurrentPage - 1 ) * AllBooksViewModel.BooksPerPage)
                 .Take(AllBooksViewModel.BooksPerPage)
